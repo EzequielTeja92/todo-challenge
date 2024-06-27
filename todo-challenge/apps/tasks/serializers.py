@@ -39,42 +39,16 @@ class TaskSerializer(serializers.ModelSerializer):
             logger.error(f"Error creating task: {e}")
             raise serializers.ValidationError({"detail": "Error creating task"})
 
-    # def update(self, instance, validated_data):
-    #     try:
-    #         instance.title = validated_data.get('title', instance.title)
-    #         instance.description = validated_data.get('description', instance.description)
-    #         instance.status = validated_data.get('status', instance.status)
-    #         instance.save()
-
-    #         parent_task = validated_data.get('parent_task', None)
-    #         instance.parent_task = parent_task
-
-    #         instance.save()
-
-    #         labels_data = validated_data.pop('labels', None)
-    #         if labels_data:
-    #             instance.labels.clear()
-    #             for label_data in labels_data:
-    #                 label, _ = Label.objects.get_or_create(**label_data)
-    #                 instance.labels.add(label)
-
-    #         return instance
-    #     except Exception as e:
-    #         logger.error(f"Error updating task: {e}")
-    #         raise serializers.ValidationError({"detail": "Error updating task"})
-
     def update(self, instance, validated_data):
         try:
             instance.title = validated_data.get('title', instance.title)
             instance.description = validated_data.get('description', instance.description)
             instance.status = validated_data.get('status', instance.status)
 
-            # Update parent_task if provided in validated_data
             parent_task = validated_data.get('parent_task', None)
             if parent_task is not None:
                 instance.parent_task = parent_task
 
-            # Update labels if provided in validated_data
             labels_data = validated_data.pop('labels', None)
             if labels_data:
                 instance.labels.clear()
