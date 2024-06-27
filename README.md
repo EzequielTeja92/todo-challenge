@@ -1,37 +1,116 @@
-# Invera ToDo-List Challenge (Python/Django Jr-SSr)
+# Task Management API
 
-El propósito de esta prueba es conocer tu capacidad para crear una pequeña aplicación funcional en un límite de tiempo. A continuación, encontrarás las funciones, los requisitos y los puntos clave que debés tener en cuenta durante el desarrollo.
+Esta es una API que proporciona información sobre tareas y etiquetas. Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en los registros de tareas y etiquetas.
 
-## Qué queremos que hagas:
+## Requisitos
+- Python 3.9 o superior (Se recomienda Python 3.9 o superior)
+- Pipenv
+- Servidor de base de datos PostgreSQL (instalado localmente o usando Docker)
 
-- El Challenge consiste en crear una aplicación web sencilla que permita a los usuarios crear y mantener una lista de tareas.
-- La entrega del resultado será en un nuevo fork de este repo y deberás hacer una pequeña demo del funcionamiento y desarrollo del proyecto ante un super comité de las más grandes mentes maestras de Invera, o a un par de devs, lo que sea más fácil de conseguir.
-- Podes contactarnos en caso que tengas alguna consulta.
+## Configuración del Entorno
 
-## Objetivos:
+1. Clonar el repositorio:
 
-El usuario de la aplicación tiene que ser capaz de:
+   ```shell
+   git clone https://github.com/tu_usuario/tu_repositorio.git
+   cd tu_repositorio
+   ```
 
-- Autenticarse
-- Crear una tarea
-- Eliminar una tarea
-- Marcar tareas como completadas
-- Poder ver una lista de todas las tareas existentes
-- Filtrar/buscar tareas por fecha de creación y/o por el contenido de la misma
+2. Instalar las dependencias usando Pipenv. Esto creará un entorno virtual e instalará las dependencias especificadas en el Pipfile:
 
-## Qué evaluamos:
+  ```shell
+  pipenv install
+  ```
+**Nota**
+Si Pipenv usa la versión incorrecta de Python, asegúrate de tener la versión adecuada de Python instalada y configurada en tu sistema antes de ejecutar el comando pipenv install.
 
-- Desarrollo utilizando Python, Django. No es necesario crear un Front-End, pero sí es necesario tener una API que permita cumplir con los objetivos de arriba.
-- Uso de librerías y paquetes estandares que reduzcan la cantidad de código propio añadido.
-- Calidad y arquitectura de código. Facilidad de lectura y mantenimiento del código. Estándares seguidos.
-- [Bonus] Manejo de logs.
-- [Bonus] Creación de tests (unitarias y de integración)
-- [Bonus] Unificar la solución propuesta en una imagen de Docker por repositorio para poder ser ejecutada en cualquier ambiente (si aplica para full stack).
+3. Activar el entorno virtual:
 
-## Requerimientos de entrega:
+shell
+   ```shell
+  pipenv shell
+  ```
 
-- Hacer un fork del proyecto y pushearlo en github. Puede ser privado.
-- La solución debe correr correctamente.
-- El Readme debe contener todas las instrucciones para poder levantar la aplicación, en caso de ser necesario, y explicar cómo se usa.
-- Disponibilidad para realizar una pequeña demo del proyecto al finalizar el challenge.
-- Tiempo para la entrega: Aproximadamente 7 días.
+4. Configurar la base de datos PostgreSQL:
+
+  ### Si tienes un servidor PostgreSQL local:
+    Crea una base de datos con el nombre todochallenge (o cualquier nombre de tu elección).
+
+Actualiza la configuración de la base de datos en el archivo .env con tus credenciales de PostgreSQL:
+
+  ```python
+  DB_USER=tu-usuario-postgres
+  DB_PASSWORD=tu-contraseña-postgres
+  DB_NAME=todochallenge
+  DB_HOST=localhost
+  DB_PORT=5432
+  ```
+
+  ### Si prefieres usar Docker para ejecutar el proyecto:
+  Asegúrate de tener Docker instalado y en ejecución en tu sistema, luego ejecuta el comando:
+  ```docker
+  docker-compose up -d --build
+  ```
+
+5. Ejecutar las migraciones de la base de datos:
+
+```shell
+python manage.py migrate
+``` 
+Iniciar el servidor:
+
+```shell
+python manage.py runserver
+```
+## Endpoints
+
+### Obtener token de acceso:
+
+* POST /api/token/
+
+```json
+body:
+{
+  "username": "your_username",
+  "password": "your_password"
+}
+```
+### Refrescar token de acceso:
+
+*POST /api/token/refresh/
+
+```json
+Body:
+{
+  "refresh": "your_refresh_token"
+}
+```
+
+### Listar y crear tareas:
+
+* GET /api/tasks/
+* POST /api/tasks/
+
+### Obtener, actualizar y eliminar una tarea específica:
+
+* GET /api/tasks/{id}/
+* PUT /api/tasks/{id}/
+* DELETE /api/tasks/{id}/
+
+### Listar y crear etiquetas:
+
+* GET /api/labels/
+* POST /api/labels/
+
+### btener, actualizar y eliminar una etiqueta específica:
+
+* GET /api/labels/{id}/
+* PUT /api/labels/{id}/
+* DELETE /api/labels/{id}/
+
+
+# Credenciales de BackOffice:
+```shell
+usuario: admin
+contraseña: admin
+```

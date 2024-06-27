@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+    db:
+        image: postgres:14.1-alpine
+        env_file:
+            - .env
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: todochallenge
+        volumes:
+            - db_data:/var/lib/postgresql/data
+            - ./pg_seed:/pg_seed
+        ports:
+            - '5432:5432'
+
+    app:
+        env_file:
+            - .env
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile-development
+        command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:3000"
+        ports:
+            - 3000:3000
+        depends_on:
+            - db
+        volumes:
+            - .:/app
+        environment:
+            PYTHONPATH: /app
+            DJANGO_MAIN_PROCESS: "true"
+
+volumes:
+  db_data:
